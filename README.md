@@ -12,6 +12,9 @@ These shared memory is dynamically accessed and modified by multiple users.
 
 **Multithreading** can be used to achieve the process by **multiple customers at concurrent time**.
 
+### Without synchronization
+![without synchronization](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/without_sync.jpg)
+
 Consistent of data is one of the crucial matter involved in concurrent processing.
 
 | **Thread-1** | **Thread-2** | **Shared Memory** |
@@ -24,6 +27,9 @@ Consistent of data is one of the crucial matter involved in concurrent processin
 This problem can be solved with the help of **concurrency control** mechanisms.So that threads work in **synchronized manner**.
 
 That is after completing a full process of a thread , next thread is executed.
+
+### With synchronization
+![with synchronization](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/with_sync.jpg)
 
 For example:
 
@@ -58,9 +64,15 @@ These patterns are made as methods of a MessageProtocol class which can use base
 
 When all subscriber need to receive message BroadCast() is used.
 
+### Broadcast() with atleast n method as false
+![atleast_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atleast_n.jpg)
+
 When atleast n active subscriber need to receive else no one can receive is sendAtleastN().
 
 When atmost n active subscriber need to receive else no one can receive is sendNeverMoreThanN().
+
+### Atmost n method as false
+![atmost_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atmost_n.jpg)
 
 These protocol is **functioned with producer** who sends the message and Thread is created for MessageSubscriber.
 
