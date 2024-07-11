@@ -1,51 +1,64 @@
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TicketReservation implements Runnable{
-    static int tickets = 100;
+    static AtomicInteger tickets;
+    static ReentrantLock lock = new ReentrantLock();
     String s;
 
-    TicketReservation(String s){
+    TicketReservation(String s,AtomicInteger shared_memory){
         this.s = s;
+        this.tickets = shared_memory;
     }
     @Override
     public void run() {
         System.out.println("New Customer : "+Thread.currentThread().getName());
         criticalProcess();
     }
-    static synchronized void criticalProcess(){
+    static void criticalProcess(){
+
+        lock.lock();
         register(2);
         cancel(1);
+        lock.unlock();
+
     }
     public static void register(int n_ticket){
         System.out.println("\nBuying new Ticket : "+Thread.currentThread().getName());
         try{
+            lock.lock();
             Thread.sleep(3000);
-            if(tickets-n_ticket<0){
+            AtomicInteger t = new AtomicInteger(tickets.intValue());
+            if(t.addAndGet(-n_ticket)<0){
                 System.out.println("Required amount of tickets not available");
                 return;
             }
-            tickets -= n_ticket;
+            tickets.addAndGet(-n_ticket);
         }
         catch(Exception e){
             e.printStackTrace();
         }
         finally {
+            lock.unlock();
             System.out.println(tickets+" tickets available");
         }
     }
     public static void cancel(int n_ticket){
         System.out.println("\nCancelling the ticket bought : "+Thread.currentThread().getName());
         try{
+            lock.lock();
             Thread.sleep(3000);
-            tickets += n_ticket;
+            tickets.addAndGet(n_ticket);
         }
         catch(Exception e){
             e.printStackTrace();
         }
         finally {
             System.out.println("Tickets cancelled and bill refunded");
+            lock.unlock();
             System.out.println(tickets+" tickets available");
         }
     }
@@ -53,9 +66,11 @@ public class TicketReservation implements Runnable{
 
 class Test{
     public static void main(String[] args) {
-        TicketReservation thread = new TicketReservation(" ");
-        int n_customers = 5;
+        AtomicInteger shared_memory = new AtomicInteger(100);
+        int n_customers = 7;
         int n_collectors = 5;
+
+        TicketReservation thread = new TicketReservation(" ",shared_memory);
         allocateCounter(n_customers,n_collectors,thread);
 
     }
@@ -65,10 +80,8 @@ class Test{
             executor.execute(run);
         }
         executor.shutdown();
-        while (!executor.isTerminated()) {
-//            System.out.println("Something went wrong!!!");
-//            break;
-        }
+
+        while(!executor.isTerminated()){}
 
         System.out.println("\nFinished all threads");
 }
