@@ -97,6 +97,10 @@ This **works by thread** and processed and in concurrent way.To simulate the wor
 
 Previously the subscriber list is fixed in size so cannot be used for real-time dynamic solutions.
 
+
+### Dynamic list
+![dynamic list](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/list.jpg)
+
 Now the **CopyOnWriteArrayList<>()** is used which is used for multi threading process which **updates the list by taking a copy of the list ,** it will be dynamic and flexible by removing final variables and objects.
 
 Based on the current status of the subscribers, the messages may sent or may not sent.
