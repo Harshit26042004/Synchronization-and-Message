@@ -80,13 +80,13 @@ These patterns are made as methods of a MessageProtocol class which can use base
 	When all subscriber with acknowledgement need to receive message BroadCast() is used.
 
 ### Broadcast() with atleast n method as false
-![atleast_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atleast_n.jpg)
+![atleast_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atleast_discarded.jpg)
 
 When atleast n active subscriber with acknowledgement need to receive else no one can receive is sendAtleastN().
 When atmost n active subscriber with acknowledgement need to receive else no one can receive is sendNeverMoreThanN().
 
 ### Atmost n method as false
-![atmost_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atmost_n.jpg)
+![atmost_n](https://github.com/Harshit26042004/Synchronization-and-Message/blob/main/atmost_discarded.jpg)
 
 These protocol is **functioned with producer** who sends the message and Thread is created for MessageSubscriber.
 
